@@ -14,13 +14,11 @@ from typing import Dict, List, Tuple
 import time
 
 class WoWUIMigrator:
-    def __init__(self, wtf_path: str, dry_run: bool = False, backup: bool = True, create_copy: bool = False):
+    def __init__(self, wtf_path: str, dry_run: bool = False):
         self.wtf_path = Path(wtf_path)
         self.dry_run = dry_run
-        self.backup = backup
-        self.create_copy = create_copy
         self.changes_made = []
-        self.working_path = self.wtf_path  # This will be updated if we create a copy
+        self.working_path = self.wtf_path  # This will be updated when we create a copy
         
         # Setup logging
         logging.basicConfig(
@@ -37,22 +35,6 @@ class WoWUIMigrator:
         self.config_extensions = {
             '.lua', '.txt', '.toc', '.xml', '.wtf'
         }
-        
-    def create_backup(self) -> str:
-        """Create a backup of the WTF folder before making changes."""
-        if not self.backup:
-            return ""
-            
-        timestamp = time.strftime("%Y%m%d_%H%M%S")
-        backup_path = f"{self.wtf_path}_backup_{timestamp}"
-        
-        if not self.dry_run:
-            self.logger.info(f"Creating backup at: {backup_path}")
-            shutil.copytree(self.wtf_path, backup_path)
-        else:
-            self.logger.info(f"[DRY RUN] Would create backup at: {backup_path}")
-            
-        return backup_path
     
     def create_migration_copy(self, old_realm: str, new_realm: str, 
                              old_char: str = None, new_char: str = None) -> str:
@@ -272,15 +254,9 @@ class WoWUIMigrator:
             self.logger.error(f"WTF folder not found: {self.wtf_path}")
             return False
         
-        # Create backup and/or copy as needed
-        backup_path = ""
-        copy_path = ""
-        
-        if self.create_copy:
-            copy_path = self.create_migration_copy(old_realm, new_realm, old_char, new_char)
-            self.logger.info(f"Working on copy at: {self.working_path}")
-        else:
-            backup_path = self.create_backup()
+        # Always create a copy for safety
+        copy_path = self.create_migration_copy(old_realm, new_realm, old_char, new_char)
+        self.logger.info(f"Working on copy at: {self.working_path}")
         
         try:
             # Get mappings
@@ -297,19 +273,13 @@ class WoWUIMigrator:
             self.logger.info(f"Migration completed!")
             self.logger.info(f"Folders renamed: {len(renamed_folders)}")
             self.logger.info(f"Files updated: {len(updated_files)}")
-            
-            if copy_path:
-                self.logger.info(f"Migrated copy created at: {copy_path}")
-                self.logger.info(f"Original WTF folder unchanged at: {self.wtf_path}")
-            elif backup_path:
-                self.logger.info(f"Backup created at: {backup_path}")
+            self.logger.info(f"Migrated copy created at: {copy_path}")
+            self.logger.info(f"Original WTF folder unchanged at: {self.wtf_path}")
             
             return True
             
         except Exception as e:
             self.logger.error(f"Migration failed: {e}")
-            if backup_path and not self.dry_run:
-                self.logger.info("Consider restoring from backup if needed")
             return False
     
     def get_realm_and_character_info(self) -> Dict[str, List[str]]:
@@ -352,17 +322,13 @@ def main():
     parser.add_argument("--old-account", help="Source account name")
     parser.add_argument("--new-account", help="Target account name")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be changed without making changes")
-    parser.add_argument("--no-backup", action="store_true", help="Skip creating backup")
-    parser.add_argument("--create-copy", action="store_true", help="Create a migrated copy, leaving original WTF folder untouched")
     parser.add_argument("--scan", action="store_true", help="Scan WTF folder to show existing realms, characters, and accounts")
     
     args = parser.parse_args()
     
     migrator = WoWUIMigrator(
         wtf_path=args.wtf_path,
-        dry_run=args.dry_run,
-        backup=not args.no_backup,
-        create_copy=args.create_copy
+        dry_run=args.dry_run
     )
     
     if args.scan:

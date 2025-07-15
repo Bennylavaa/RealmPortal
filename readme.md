@@ -6,8 +6,7 @@ A powerful Python tool for migrating World of Warcraft interface configurations 
 
 - **Complete Migration**: Migrates both folder structure and file contents
 - **Selective Updates**: Choose what to migrate (realm, character, account, or any combination)
-- **Safety First**: Creates backups and offers dry-run mode
-- **Safe Copy Mode**: Create migrated copies while leaving originals untouched
+- **Safety First**: Always creates copies, leaving your original WTF folder untouched
 - **Smart Processing**: Only processes relevant files and folders
 - **Cross-Platform**: Works on Windows, Mac, and Linux
 - **Detailed Logging**: Comprehensive logs of all changes made
@@ -50,12 +49,11 @@ python RealmPortal.py "C:\Path\To\Your\WTF" \
   --dry-run
 ```
 
-**3. Create a safe migrated copy:**
+**3. Perform the migration:**
 ```bash
 python RealmPortal.py "C:\Path\To\Your\WTF" \
   --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "MyWarrior" --new-char "NewWarrior" \
-  --create-copy
+  --old-char "MyWarrior" --new-char "NewWarrior"
 ```
 
 ## 📖 Detailed Usage
@@ -80,8 +78,6 @@ python RealmPortal.py <WTF_PATH> [OPTIONS]
 #### Safety & Behavior Options
 - `--scan` - Show existing realms, characters, and accounts
 - `--dry-run` - Preview changes without making them
-- `--create-copy` - Create migrated copy, leave original untouched
-- `--no-backup` - Skip creating backup (not recommended)
 
 ### Finding Your WTF Folder
 
@@ -106,8 +102,7 @@ D:\World of Warcraft\WTF
 Move all characters from one realm to another:
 ```bash
 python RealmPortal.py "C:\WoW\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --create-copy
+  --old-realm "Stormrage" --new-realm "Area-52"
 ```
 
 ### Character Rename
@@ -115,8 +110,7 @@ Rename a character while changing realms:
 ```bash
 python RealmPortal.py "C:\WoW\WTF" \
   --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "Oldname" --new-char "Newname" \
-  --create-copy
+  --old-char "Oldname" --new-char "Newname"
 ```
 
 ### Account Migration
@@ -125,8 +119,7 @@ Complete migration including account change:
 python RealmPortal.py "C:\WoW\WTF" \
   --old-realm "Stormrage" --new-realm "Area-52" \
   --old-char "Warrior" --new-char "Paladin" \
-  --old-account "WOW1" --new-account "WOW2" \
-  --create-copy
+  --old-account "WOW1" --new-account "WOW2"
 ```
 
 ### Preview Changes
@@ -139,15 +132,10 @@ python RealmPortal.py "C:\WoW\WTF" \
 
 ## 🛡️ Safety Features
 
-### Automatic Backups
-- Creates timestamped backups before making changes
-- Backup format: `WTF_backup_YYYYMMDD_HHMMSS`
-- Disable with `--no-backup` (not recommended)
-
-### Copy Mode (Recommended)
-- Use `--create-copy` to leave original WTF folder untouched
+- **Your original WTF folder is never modified**
 - Creates: `WTF_migrated_[migration_details]_[timestamp]`
 - Test the migrated copy before using it
+- Simply rename the migrated copy to replace your original when ready
 
 ### Dry Run Mode
 - Use `--dry-run` to preview all changes
@@ -181,7 +169,6 @@ WTF/
 **"Target directory already exists"**
 - Tool will merge directories when possible
 - Check logs for details on what was merged
-- Use `--create-copy` to avoid conflicts
 
 **"Permission denied"**
 - Close World of Warcraft before running
@@ -198,8 +185,6 @@ WTF/
 ### Before Using
 1. **Close World of Warcraft** before running the tool
 2. **Test with `--dry-run`** first to preview changes
-3. **Use `--create-copy`** for safest operation
-4. **Backup your WTF folder** manually if you're concerned
 
 ### What Gets Updated
 - The tool uses word boundary matching to avoid partial replacements
@@ -211,6 +196,11 @@ WTF/
 - When migrating specific accounts, only that account's data is processed
 - Other accounts in the same WTF folder remain untouched
 - Global settings in `Config.wtf` are still updated for realm changes
+
+### Using Your Migrated Copy
+1. Run the migration tool to create your migrated copy
+2. Test the migrated copy by temporarily renaming your original WTF folder and the migrated copy
+3. When satisfied, replace your original WTF folder with the migrated version
 
 ## 🤝 Contributing
 
@@ -230,4 +220,4 @@ This project is open source. Feel free to modify and distribute.
 
 ---
 
-**Disclaimer:** This tool modifies game configuration files. While it includes safety features, always backup important data. Use at your own risk. Not affiliated with Blizzard Entertainment.
+**Disclaimer:** This tool processes game configuration files safely by always creating copies. Your original WTF folder is never modified.
