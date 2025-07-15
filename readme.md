@@ -43,17 +43,12 @@ python RealmPortal.py "C:\Path\To\Your\WTF" --scan
 
 **2. Preview your migration (recommended):**
 ```bash
-python RealmPortal.py "C:\Path\To\Your\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "MyWarrior" --new-char "NewWarrior" \
-  --dry-run
+python RealmPortal.py "C:\Path\To\Your\WTF" --old-realm "Stormrage" --new-realm "Area-52" --old-char "MyWarrior" --new-char "NewWarrior" --dry-run
 ```
 
 **3. Perform the migration:**
 ```bash
-python RealmPortal.py "C:\Path\To\Your\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "MyWarrior" --new-char "NewWarrior"
+python RealmPortal.py "C:\Path\To\Your\WTF" --old-realm "Stormrage" --new-realm "Area-52" --old-char "MyWarrior" --new-char "NewWarrior" --old-account "WOW1" --new-account "WOW2"
 ```
 
 ## 📖 Detailed Usage
@@ -101,33 +96,25 @@ D:\World of Warcraft\WTF
 ### Realm Transfer
 Move all characters from one realm to another:
 ```bash
-python RealmPortal.py "C:\WoW\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52"
+python RealmPortal.py "C:\WoW\WTF" --old-realm "Stormrage" --new-realm "Area-52"
 ```
 
 ### Character Rename
 Rename a character while changing realms:
 ```bash
-python RealmPortal.py "C:\WoW\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "Oldname" --new-char "Newname"
+python RealmPortal.py "C:\WoW\WTF" --old-realm "Stormrage" --new-realm "Area-52" --old-char "Oldname" --new-char "Newname"
 ```
 
 ### Account Migration
 Complete migration including account change:
 ```bash
-python RealmPortal.py "C:\WoW\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --old-char "Warrior" --new-char "Paladin" \
-  --old-account "WOW1" --new-account "WOW2"
+python RealmPortal.py "C:\WoW\WTF" --old-realm "Stormrage" --new-realm "Area-52" --old-char "Warrior" --new-char "Paladin" --old-account "WOW1" --new-account "WOW2"
 ```
 
 ### Preview Changes
 Always test first with dry-run:
 ```bash
-python RealmPortal.py "C:\WoW\WTF" \
-  --old-realm "Stormrage" --new-realm "Area-52" \
-  --dry-run
+python RealmPortal.py "C:\WoW\WTF" --old-realm "Stormrage" --new-realm "Area-52" --dry-run
 ```
 
 ## 🛡️ Safety Features
