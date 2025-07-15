@@ -166,7 +166,6 @@ WTF/
 │       └── REALMNAME/
 │           └── CHARACTERNAME/
 │               ├── SavedVariables/    # Character-specific addon data
-│               └── AddOns/           # Character-specific addon settings
 ```
 
 ## 🔧 Troubleshooting
